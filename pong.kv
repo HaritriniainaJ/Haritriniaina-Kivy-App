@@ -1,0 +1,126 @@
+#:kivy 1.0.9
+
+<PongBall>:
+    size: 40, 40 
+    canvas:
+        Color:
+            rgba: 1, 0.9, 0.4, 1
+        Ellipse:
+            pos: self.pos
+            size: self.size          
+
+<PongPaddle>:
+    canvas:
+        # L'apparence et la couleur sont dessinées dynamiquement par le script Python
+
+<PongGame>:
+    ball: pong_ball
+    player1: player_left
+    player2: player_right
+    player3: player_bottom
+    player4: player_top
+    winner_label: winner_text
+    menu_btn: main_button
+    
+    canvas:
+        Color:
+            rgba: 0.05, 0.05, 0.1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            
+        # Lignes repères centrales discrètes en croix
+        Color:
+            rgba: 0.4, 0.9, 1, 0.1
+        Rectangle:
+            pos: self.center_x - 1, 0
+            size: 2, self.height
+        Rectangle:
+            pos: 0, self.center_y - 1
+            size: self.width, 2
+    
+    # Score J1 (Gauche - Cyan)
+    Label:
+        font_size: 50
+        center_x: root.width * 0.2
+        center_y: root.center_y
+        text: str(root.player1.score)
+        color: 0.4, 0.9, 1, 0.5
+        
+    # Score J2 (Droite - Rose)
+    Label:
+        font_size: 50
+        center_x: root.width * 0.8
+        center_y: root.center_y
+        text: str(root.player2.score)
+        color: 1, 0.4, 0.7, 0.5
+        
+    # Score J3 (Bas - Vert)
+    Label:
+        font_size: 50
+        center_x: root.center_x
+        center_y: root.height * 0.3
+        text: str(root.player3.score)
+        color: 0.4, 1, 0.4, 0.5
+
+    # Score J4 (Haut - Jaune)
+    Label:
+        font_size: 50
+        center_x: root.center_x
+        center_y: root.height * 0.7
+        text: str(root.player4.score)
+        color: 1, 0.9, 0.4, 0.5
+        
+    Label:
+        id: winner_text
+        font_size: 32
+        font_name: 'Roboto'
+        center_x: root.center_x
+        center_y: root.center_y + 120
+        text: "PONG A 4 JOUEURS !\nCliquez ci-dessous pour démarrer."
+        halign: 'center'
+        color: 1, 1, 1, 1
+
+    Button:
+        id: main_button
+        text: "COMMENCER LE JEU"
+        font_size: 20
+        size: 220, 50
+        center_x: root.center_x
+        center_y: root.center_y
+        background_color: 0.2, 0.6, 1, 1
+        on_release: root.toggle_menu()
+    
+    PongBall:
+        id: pong_ball
+        center: self.parent.center
+
+    # Raquettes verticales
+    PongPaddle:
+        id: player_left
+        orientation: 'vertical'
+        size: 20, 140
+        x: root.x + 15
+        center_y: root.center_y
+
+    PongPaddle:
+        id: player_right
+        orientation: 'vertical'
+        size: 20, 140
+        x: root.width - self.width - 15
+        center_y: root.center_y
+
+    # Raquettes horizontales
+    PongPaddle:
+        id: player_bottom
+        orientation: 'horizontal'
+        size: 140, 20
+        y: root.y + 15
+        center_x: root.center_x
+
+    PongPaddle:
+        id: player_top
+        orientation: 'horizontal'
+        size: 140, 20
+        y: root.height - self.height - 15
+        center_x: root.center_x
